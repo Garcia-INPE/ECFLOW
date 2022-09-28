@@ -1,0 +1,194 @@
++ export ECF_PORT=3143
++ ECF_PORT=3143
++ export ECF_HOST=headnode.egeon.cptec.inpe.br
++ ECF_HOST=headnode.egeon.cptec.inpe.br
++ export ECF_NAME=/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_Tropicos
++ ECF_NAME=/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_Tropicos
++ export ECF_PASS=XWRo0798
++ ECF_PASS=XWRo0798
++ export ECF_TRYNO=1
++ ECF_TRYNO=1
++ export ECF_RID=146153
++ ECF_RID=146153
++ export ECF_HOME=/home/roberto.garcia/ecflow
++ ECF_HOME=/home/roberto.garcia/ecflow
++ ecflow_client --init=146153
++ trap ERROR 0
++ trap '{ echo "Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8 10 12 13 15
++ echo 'I am TASK /BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_Tropicos'
+I am TASK /BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_Tropicos
++ REGIAO=run_scantec_ecflow_Tropicos
++ REGIAO=Tropicos
++ case ${REGIAO} in
++ LAT_UP=20
++ LAT_LOW=-20
++ LON_LOW=-180
++ LON_UP=180
+++ hostname
++ maqui=headnode.egeon.cptec.inpe.br
++ cd /home/roberto.garcia/sfw/SCANTEC-2.0.0
+++ pwd
++ dir_act=/home/roberto.garcia/sfw/SCANTEC-2.0.0
++ scantec_tables=/home/roberto.garcia/sfw/SCANTEC-2.0.0/tables
++ dir_data=/home/roberto.garcia/sfw/SCANTEC-2.0.0
++ mkdir -p /home/roberto.garcia/sfw/SCANTEC-2.0.0/logfile
++ mkdir -p /home/roberto.garcia/sfw/SCANTEC-2.0.0/datain
++ mkdir -p /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout
+++ date +%Y%m%d.%H.%M
++ RUNTM=20220928.14.19
++ ARQlog=/home/roberto.garcia/sfw/SCANTEC-2.0.0/logfile/scantec-Tropicos-20220928.14.19.log
++ MODELCASE='OPER  BAM_H'
++ dir_run=BAM_H/Tropicos
++ '[' OPER == OPER ']'
+++ date +%Y%m%d
++ DATA_AVAL=20220928
++ YYYY=2022
++ MM=09
++ DD=28
++ HH=00
++ '[' OPER == OPER ']'
++ DIR_MODEL=/oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2
++ total_previsao=72
++ datai=2022092800
++ dataf=2022092800
++ passo_analise=12
++ passo_previsao=24
++ lat_low=-20
++ lon_low=-180
++ lat_up=20
++ lon_up=180
++ dx=0.4
++ dy=0.4
++ quant_exp=1
++ '[' OPER == OPER ']'
++ pl_model_refer=BAM_TQ0666L064_33levs
++ arq_refer=/oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%y4%m2%d2%h2%y4%m2%d2%h2P.icn.TQ0666L064.ctl
++ pl_model_exper=BAM_TQ0299L064_18levs
++ arq_prev=/oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%iy4%im2%id2%ih2%fy4%fm2%fd2%fh2P.fct.TQ0666L064.ctl
++ use_climatologia=1
++ arq_clim=/pesq/share/dmdpesq/roberto.garcia/climatologia/climatologia50yr.%mc.ctl
++ saida_results=/home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos
++ '[' '!' -e /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos ']'
++ ln -f -s /home/roberto.garcia/sfw/SCANTEC-2.0.0/bin/scantec.x /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos/scantec.x
++ echo ''
+
++ echo ' <<< INICIANDO SCANTEC >>>        '
+ <<< INICIANDO SCANTEC >>>        
++ echo OPER BAM_H
+OPER BAM_H
++ echo ''
+
++ echo ' Configurações da avaliação:               '
+ Configurações da avaliação:               
++ echo ' ==========================                '
+ ==========================                
++ echo ' Data inicial:   2022092800                  '
+ Data inicial:   2022092800                  
++ echo ' Data final:     2022092800                  '
+ Data final:     2022092800                  
++ echo ' Passo análise:  12          '
+ Passo análise:  12          
++ echo ' Passo previsão: 24         '
+ Passo previsão: 24         
++ echo ' Total previsão: 72         '
+ Total previsão: 72         
++ echo ''
+
++ echo ' Regiao.: Tropicos                        '
+ Regiao.: Tropicos                        
++ echo ' Lat low: -20                       '
+ Lat low: -20                       
++ echo ' Lon low: -180                       '
+ Lon low: -180                       
++ echo ' Lat up.: 20                        '
+ Lat up.: 20                        
++ echo ' Lon up.: 180                        '
+ Lon up.: 180                        
++ echo ''
+
++ echo ' Quantidade de experimentos: 1  '
+ Quantidade de experimentos: 1  
++ echo ''
+
++ echo ' Plugin da referência: BAM_TQ0666L064_33levs   '
+ Plugin da referência: BAM_TQ0666L064_33levs   
++ echo ' Análise:                                  '
+ Análise:                                  
++ echo ' /oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%y4%m2%d2%h2%y4%m2%d2%h2P.icn.TQ0666L064.ctl                              '
+ /oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%y4%m2%d2%h2%y4%m2%d2%h2P.icn.TQ0666L064.ctl                              
++ echo ''
+
++ echo ' Plugin experimento: BAM_TQ0299L064_18levs     '
+ Plugin experimento: BAM_TQ0299L064_18levs     
++ echo ' Previsões:                                '
+ Previsões:                                
++ echo ' /oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%iy4%im2%id2%ih2%fy4%fm2%fd2%fh2P.fct.TQ0666L064.ctl                               '
+ /oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%iy4%im2%id2%ih2%fy4%fm2%fd2%fh2P.fct.TQ0666L064.ctl                               
++ echo ''
+
++ echo ' Uso climatologia: 1     '
+ Uso climatologia: 1     
++ echo ''
+
++ echo ' Resultados:                               '
+ Resultados:                               
++ echo ' /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos                          '
+ /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos                          
++ echo ''
+
++ echo ' Arquivo de log:                           '
+ Arquivo de log:                           
++ echo ' Log do processo: /home/roberto.garcia/sfw/SCANTEC-2.0.0/logfile/scantec-Tropicos-20220928.14.19.log                '
+ Log do processo: /home/roberto.garcia/sfw/SCANTEC-2.0.0/logfile/scantec-Tropicos-20220928.14.19.log                
++ echo ' ==========================                '
+ ==========================                
++ echo ''
+
+++ date
++ data='Wed Sep 28 14:19:01 -03 2022'
++ echo ' Inigcio do processamento: Wed Sep 28 14:19:01 -03 2022'
++ echo ' Inigcio do processamento: Wed Sep 28 14:19:01 -03 2022'
+ Inigcio do processamento: Wed Sep 28 14:19:01 -03 2022
++ cd /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos
++ echo ''
+
++ echo ' Criando o arquivo de configurações em bin/scantec.conf'
+ Criando o arquivo de configurações em bin/scantec.conf
++ echo ''
+
++ INPUTDATA='$INPUTDATA'
++ cat
++ echo ' Arquivo de configuracao criado com sucesso.'
+ Arquivo de configuracao criado com sucesso.
++ echo ''
+
++ echo ' Criando arquivo scantec.conf no diretório de execução do SCANTEC ...'
++ echo
++ cat scantec.conf
++ echo
++ echo
++ cd /home/roberto.garcia/sfw/SCANTEC-2.0.0/dataout/BAM_H/Tropicos
++ '[' -e scantec.x ']'
++ echo ' Executando o scantec.x ...'
+ Executando o scantec.x ...
++ echo /oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%y4%m2%d2%h2%y4%m2%d2%h2P.icn.TQ0666L064.ctl
+/oper/share/ioper/tempo/BAM/TQ0666L064/brutos/%iy4/%im2/%id2/%ih2/GPOSNMC%y4%m2%d2%h2%y4%m2%d2%h2P.icn.TQ0666L064.ctl
++ echo ''
+
++ ./scantec.x
+scan_dataMOD :: loadData( ) error:
+  Dimensions not match!
+  wrong info by xdef, ydef or zdef.
+  See  BAM_TQ0299L064_18levs.model
++ :
++ echo ''
+
++ echo '----- FIM DA TASK ---'
+----- FIM DA TASK ---
++ echo ''
+
++ ecflow_client --label=Info 'OK... 20220928  17:18'
++ wait
++ ecflow_client --complete
++ trap 0
++ exit 0

@@ -1,0 +1,10 @@
+%include <head.h>
+echo "I am TASK:%ECF_NAME"
+
+
+#ecflow_client --label=regiao 
+
+sleep 3
+
+
+%include <tail.h>

@@ -1,0 +1,107 @@
+#!/bin/bash
+set -e # stop the shell on first error
+set -u # fail when using an undefined variable
+set -x # echo script lines as they are executed
+#set +o noclobber
+ 
+ 
+# Defines the variables that are needed for any communication with ECF
+export ECF_PORT=3143    # The server port number
+export ECF_HOST=headnode.egeon.cptec.inpe.br    # The host name where the server is running
+export ECF_NAME=/BAM_H/Avaliacao/verifica_saidas    # The name of this current task
+export ECF_PASS=lG6yWkww    # A unique password
+export ECF_TRYNO=1  # Current try number of the task
+export ECF_RID=$$             # record the process id. Also used for zombie detection
+export ECF_HOME=/home/roberto.garcia/ecflow
+ 
+# Define the path where to find ecflow_client
+# make sure client and server use the *same* version.
+# Important when there are multiple versions of ecFlow
+#export PATH=/usr/local/apps/ecflow/5.8.4/bin:$PATH
+ 
+# Tell ecFlow we have started
+ecflow_client --init=$$
+ 
+ 
+# Define a error handler
+ERROR() {
+   set +e                      # Clear -e flag, so we don't fail
+   wait                        # wait for background process to stop
+   ecflow_client --abort=trap  # Notify ecFlow that something went wrong, using 'trap' as the reason
+   trap 0                      # Remove the trap
+   exit 0                      # End the script
+}
+ 
+ 
+# Trap any calls to exit and errors caught by the -e flag
+trap ERROR 0
+ 
+ 
+# Trap any signal that may cause the script to fail
+trap '{ echo "Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8 10 12 13 15
+
+
+
+##########################################################################
+#
+#  Exports de datas importantes
+#
+
+
+echo "Sou TASK:/BAM_H/Avaliacao/verifica_saidas"
+# Para usar percent é preciso escapa-lo com percent
+
+# AQUI: TRECHO USADO MAIS DE UMA VEZ, COMO FAZER UMA FUNCAO SE SAO UDADOS POR
+# DIFERENTES TASK EM DIFERENTES DIRETORIOS?
+if [ OPER == "OPER" ]; then
+   DATA_AVAL=$(date +%Y%m%d)     # formato YYYYMMDD
+else
+   DATA_AVAL="20140805"             # formato YYYYMMDD
+fi
+
+YYYY=${DATA_AVAL:0:4}
+MM=${DATA_AVAL:4:2}
+DD=${DATA_AVAL:6:2}
+HH=00
+
+if [ OPER == "OPER" ]; then
+   QTD_FILES_EXP=186
+   DIR_MODEL="/oper/share/ioper/tempo/BAM/TQ0666L064/brutos/${YYYY}/${MM}/${DD}/${HH}"
+else
+   QTD_FILES_EXP=14
+   DIR_MODEL="/pesq/share/dmdpesq/roberto.garcia/TQ0299L064/${YYYY}${MM}${DD}${HH}"
+fi
+
+# Verifica se o diretorio existe
+if [ -d ${DIR_MODEL} ]; then
+   ecflow_client --label=info "Diretorio Ok!"
+   ecflow_client --meter=complete 1
+   
+   sleep 1
+   # Verifica qtd de arquivos (devem ter 186 por dia para OPER e 14 para o TestCase do SCANTEC))
+   QTD_FILES=$(ls -1 ${DIR_MODEL} | wc -l)
+
+   if [ ${QTD_FILES} -ge ${QTD_FILES_EXP} ]; then
+      ecflow_client --label=info "MODO OPER: Qtd arquivos ${QTD_FILES} >= esperada ${QTD_FILES_EXP} - Ok!"
+      ecflow_client --meter=complete 2
+   else
+      ecflow_client --label=info "MODO OPER: Qtd arquivos ${QTD_FILES} < esperada ${QTD_FILES_EXP} - ABORTANDO!"
+      exit 2
+   fi   
+else
+   ecflow_client --label=info "Diretorio das saidas do modelo nao existe ainda!"
+   exit 1
+fi
+
+sleep 1
+ecflow_client --label=info "MODO OPER: BAM_H ok!"
+
+echo ""
+echo "----- FIM DA TASK ---"
+echo ""
+ecflow_client --label=Info "OK... 20220928  17:18"
+wait                      # wait for background process to stop
+ecflow_client --complete  # Notify ecFlow of a normal end
+trap 0                    # Remove all traps
+exit 0  
+

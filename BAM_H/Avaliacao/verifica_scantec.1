@@ -1,0 +1,47 @@
++ export ECF_PORT=3143
++ ECF_PORT=3143
++ export ECF_HOST=headnode.egeon.cptec.inpe.br
++ ECF_HOST=headnode.egeon.cptec.inpe.br
++ export ECF_NAME=/BAM_H/Avaliacao/verifica_scantec
++ ECF_NAME=/BAM_H/Avaliacao/verifica_scantec
++ export ECF_PASS=G0OxItPw
++ ECF_PASS=G0OxItPw
++ export ECF_TRYNO=1
++ ECF_TRYNO=1
++ export ECF_RID=146079
++ ECF_RID=146079
++ export ECF_HOME=/home/roberto.garcia/ecflow
++ ECF_HOME=/home/roberto.garcia/ecflow
++ ecflow_client --init=146079
++ trap ERROR 0
++ trap '{ echo "Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8 10 12 13 15
++ echo 'Sou TASK:/BAM_H/Avaliacao/verifica_scantec'
+Sou TASK:/BAM_H/Avaliacao/verifica_scantec
++ EXE_NAME=/home/roberto.garcia/sfw/SCANTEC-2.0.0/bin/scantec.x
++ '[' '!' -z /home/roberto.garcia/sfw/SCANTEC-2.0.0/bin/scantec.x -a -f /home/roberto.garcia/sfw/SCANTEC-2.0.0/bin/scantec.x ']'
++ ecflow_client --label=info 'Executavel ok!'
++ ecflow_client --meter=complete 1
++ sleep 1
++ '[' BAM_H == BAM_H ']'
++ TABLE_NAME=/home/roberto.garcia/sfw/SCANTEC-2.0.0/tables/BAM_TQ0666L064_33levs.model
++ '[' '!' -z /home/roberto.garcia/sfw/SCANTEC-2.0.0/tables/BAM_TQ0666L064_33levs.model -a -f /home/roberto.garcia/sfw/SCANTEC-2.0.0/tables/BAM_TQ0666L064_33levs.model ']'
++ ecflow_client --label=info 'Table do modelo ok!'
++ ecflow_client --meter=complete 2
++ sleep 1
++ SCR_NAME=/home/roberto.garcia/ecflow/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_region.ecf
++ '[' '!' -z /home/roberto.garcia/ecflow/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_region.ecf -a -f /home/roberto.garcia/ecflow/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_region.ecf ']'
++ ecflow_client --label=info 'Script /home/roberto.garcia/ecflow/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_region.ecf ok!'
++ ecflow_client --meter=complete 3
++ sleep 1
++ ecflow_client --label=info 'SCANTEC ok!'
++ echo ''
+
++ echo '----- FIM DA TASK ---'
+----- FIM DA TASK ---
++ echo ''
+
++ ecflow_client --label=Info 'OK... 20220928  17:18'
++ wait
++ ecflow_client --complete
++ trap 0
++ exit 0

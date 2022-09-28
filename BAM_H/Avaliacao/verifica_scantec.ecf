@@ -1,0 +1,44 @@
+%include <head.h>
+echo "Sou TASK:%ECF_NAME%"
+# Para usar percent é preciso escapa-lo com percent
+
+# Verifica executavel
+EXE_NAME="%DIR_SCANTEC%/bin/scantec.x"
+if [ ! -z ${EXE_NAME} -a -f ${EXE_NAME} ]; then
+   ecflow_client --label=info "Executavel ok!"
+   ecflow_client --meter=complete 1
+else
+   ecflow_client --label=info "Problemas com o executavel!"
+   exit 1
+fi
+
+sleep %SLEEP%
+# Verifica table do modelo
+if [ %SUITE% == "BAM_H" ]; then
+   TABLE_NAME="%DIR_SCANTEC%/tables/BAM_TQ0666L064_33levs.model"
+fi
+if [ ! -z "${TABLE_NAME}" -a -f "${TABLE_NAME}" ]; then
+   ecflow_client --label=info "Table do modelo ok!"
+   ecflow_client --meter=complete 2
+else
+   ecflow_client --label=info "Problemas com a table do modelo"
+   exit 1
+fi
+
+sleep %SLEEP%
+# Verifica script ecf para rodar o ecflow por regioes
+# Este script eh um template, pois eh criado um link para cada regiao
+SCR_NAME="%ECF_HOME%/%SUITE%/%FAMILY%/SCANTEC_2.0.0/run_scantec_ecflow_region.ecf"
+if [ ! -z "${SCR_NAME}" -a -f "${SCR_NAME}" ]; then
+   ecflow_client --label=info "Script ${SCR_NAME} ok!"
+   ecflow_client --meter=complete 3
+else
+   ecflow_client --label=info "Problemas com o script ${SCR_NAME}"
+   exit 1
+fi
+
+sleep %SLEEP%
+ecflow_client --label=info "SCANTEC ok!"
+
+
+%include <tail.h>

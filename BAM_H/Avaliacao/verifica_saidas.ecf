@@ -1,0 +1,50 @@
+%include <head.h>
+echo "Sou TASK:%ECF_NAME%"
+# Para usar percent é preciso escapa-lo com percent
+
+# AQUI: TRECHO USADO MAIS DE UMA VEZ, COMO FAZER UMA FUNCAO SE SAO UDADOS POR
+# DIFERENTES TASK EM DIFERENTES DIRETORIOS?
+if [ %MODO_AVAL% == "OPER" ]; then
+   DATA_AVAL=$(date +%%Y%%m%%d)     # formato YYYYMMDD
+else
+   DATA_AVAL="20140805"             # formato YYYYMMDD
+fi
+
+YYYY=${DATA_AVAL:0:4}
+MM=${DATA_AVAL:4:2}
+DD=${DATA_AVAL:6:2}
+HH=%INIT_TIME%
+
+if [ %MODO_AVAL% == "OPER" ]; then
+   QTD_FILES_EXP=186
+   DIR_MODEL="/oper/share/ioper/tempo/BAM/TQ0666L064/brutos/${YYYY}/${MM}/${DD}/${HH}"
+else
+   QTD_FILES_EXP=14
+   DIR_MODEL="/pesq/share/dmdpesq/roberto.garcia/TQ0299L064/${YYYY}${MM}${DD}${HH}"
+fi
+
+# Verifica se o diretorio existe
+if [ -d ${DIR_MODEL} ]; then
+   ecflow_client --label=info "Diretorio Ok!"
+   ecflow_client --meter=complete 1
+   
+   sleep %SLEEP%
+   # Verifica qtd de arquivos (devem ter 186 por dia para OPER e 14 para o TestCase do SCANTEC))
+   QTD_FILES=$(ls -1 ${DIR_MODEL} | wc -l)
+
+   if [ ${QTD_FILES} -ge ${QTD_FILES_EXP} ]; then
+      ecflow_client --label=info "MODO %MODO_AVAL%: Qtd arquivos ${QTD_FILES} >= esperada ${QTD_FILES_EXP} - Ok!"
+      ecflow_client --meter=complete 2
+   else
+      ecflow_client --label=info "MODO %MODO_AVAL%: Qtd arquivos ${QTD_FILES} < esperada ${QTD_FILES_EXP} - ABORTANDO!"
+      exit 2
+   fi   
+else
+   ecflow_client --label=info "Diretorio das saidas do modelo nao existe ainda!"
+   exit 1
+fi
+
+sleep %SLEEP%
+ecflow_client --label=info "MODO %MODO_AVAL%: %SUITE% ok!"
+
+%include <tail.h>

@@ -1,0 +1,101 @@
+#!/bin/bash
+set -e # stop the shell on first error
+set -u # fail when using an undefined variable
+set -x # echo script lines as they are executed
+#set +o noclobber
+ 
+ 
+# Defines the variables that are needed for any communication with ECF
+export ECF_PORT=3143    # The server port number
+export ECF_HOST=headnode.egeon.cptec.inpe.br    # The host name where the server is running
+export ECF_NAME=/BAM_H/Avaliacao/verifica_scantec    # The name of this current task
+export ECF_PASS=G0OxItPw    # A unique password
+export ECF_TRYNO=1  # Current try number of the task
+export ECF_RID=$$             # record the process id. Also used for zombie detection
+export ECF_HOME=/home/roberto.garcia/ecflow
+ 
+# Define the path where to find ecflow_client
+# make sure client and server use the *same* version.
+# Important when there are multiple versions of ecFlow
+#export PATH=/usr/local/apps/ecflow/5.8.4/bin:$PATH
+ 
+# Tell ecFlow we have started
+ecflow_client --init=$$
+ 
+ 
+# Define a error handler
+ERROR() {
+   set +e                      # Clear -e flag, so we don't fail
+   wait                        # wait for background process to stop
+   ecflow_client --abort=trap  # Notify ecFlow that something went wrong, using 'trap' as the reason
+   trap 0                      # Remove the trap
+   exit 0                      # End the script
+}
+ 
+ 
+# Trap any calls to exit and errors caught by the -e flag
+trap ERROR 0
+ 
+ 
+# Trap any signal that may cause the script to fail
+trap '{ echo "Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8 10 12 13 15
+
+
+
+##########################################################################
+#
+#  Exports de datas importantes
+#
+
+
+echo "Sou TASK:/BAM_H/Avaliacao/verifica_scantec"
+# Para usar percent é preciso escapa-lo com percent
+
+# Verifica executavel
+EXE_NAME="/home/roberto.garcia/sfw/SCANTEC-2.0.0/bin/scantec.x"
+if [ ! -z ${EXE_NAME} -a -f ${EXE_NAME} ]; then
+   ecflow_client --label=info "Executavel ok!"
+   ecflow_client --meter=complete 1
+else
+   ecflow_client --label=info "Problemas com o executavel!"
+   exit 1
+fi
+
+sleep 1
+# Verifica table do modelo
+if [ BAM_H == "BAM_H" ]; then
+   TABLE_NAME="/home/roberto.garcia/sfw/SCANTEC-2.0.0/tables/BAM_TQ0666L064_33levs.model"
+fi
+if [ ! -z "${TABLE_NAME}" -a -f "${TABLE_NAME}" ]; then
+   ecflow_client --label=info "Table do modelo ok!"
+   ecflow_client --meter=complete 2
+else
+   ecflow_client --label=info "Problemas com a table do modelo"
+   exit 1
+fi
+
+sleep 1
+# Verifica script ecf para rodar o ecflow por regioes
+# Este script eh um template, pois eh criado um link para cada regiao
+SCR_NAME="/home/roberto.garcia/ecflow/BAM_H/Avaliacao/SCANTEC_2.0.0/run_scantec_ecflow_region.ecf"
+if [ ! -z "${SCR_NAME}" -a -f "${SCR_NAME}" ]; then
+   ecflow_client --label=info "Script ${SCR_NAME} ok!"
+   ecflow_client --meter=complete 3
+else
+   ecflow_client --label=info "Problemas com o script ${SCR_NAME}"
+   exit 1
+fi
+
+sleep 1
+ecflow_client --label=info "SCANTEC ok!"
+
+
+echo ""
+echo "----- FIM DA TASK ---"
+echo ""
+ecflow_client --label=Info "OK... 20220928  17:18"
+wait                      # wait for background process to stop
+ecflow_client --complete  # Notify ecFlow of a normal end
+trap 0                    # Remove all traps
+exit 0  
+

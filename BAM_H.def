@@ -1,0 +1,43 @@
+suite BAM_H
+   edit ECF_HOME "/home/roberto.garcia/ecflow"
+   edit ECF_HOST "headnode.egeon.cptec.inpe.br"
+   edit ECF_INCLUDE "/home/roberto.garcia/ecflow/includes"
+   edit ECF_TRIES "1" 
+
+   family Avaliacao
+      edit INIT_TIME "00"
+      edit MODO_AVAL "OPER"                        # OPER (/share) | TEST (testcase scantec)
+
+      task verifica_saidas
+         edit SLEEP 1
+         label info "Aguardando execucao ..."
+         meter complete 0 2 2                      # registra progresso da task 
+         #cron 07:40                               # diariamente as 07:40
+
+      task verifica_scantec
+         edit SLEEP 1
+         trigger verifica_saidas == complete       # soh prossegue se saidas do modelo ok
+         edit DIR_SCANTEC "/home/roberto.garcia/sfw/SCANTEC-2.0.0"
+         label info "Aguardando execucao ..."
+         meter complete 0 3 3
+
+      family SCANTEC_2.0.0
+         trigger verifica_scantec == complete      # soh prossegue se scantec ok
+         edit DIR_SCANTEC "/home/roberto.garcia/sfw/SCANTEC-2.0.0"
+         edit DIR_DATA "/home/roberto.garcia/sfw/SCANTEC-2.0.0"
+         label info ""
+
+         # Todas as tasks abaixo sao links para run_scantec_ecflow_region.ecf
+         task run_scantec_ecflow_Am_Sul
+         task run_scantec_ecflow_Am_Norte
+         task run_scantec_ecflow_Tropicos
+         task run_scantec_ecflow_Extratrop_S
+         task run_scantec_ecflow_Extratrop_N
+         task run_scantec_ecflow_Euro_N_Africa
+         task run_scantec_ecflow_Polar_S
+         task run_scantec_ecflow_Polar_N
+         task run_scantec_ecflow_Asia
+         task run_scantec_ecflow_Austr_N_Zel
+      endfamily
+   endfamily
+endsuite
